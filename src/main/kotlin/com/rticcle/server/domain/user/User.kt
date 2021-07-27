@@ -1,8 +1,5 @@
 package com.rticcle.server.domain.user
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import javax.persistence.*
 
 @Entity
 class User (
@@ -10,7 +7,18 @@ class User (
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = Long.MAX_VALUE,
 
+    @Column(nullable = false)
     var userEmail: String = "",
-    var userPassword: String = ""
+
+    @Column(nullable = false)
+    var userPassword: String = "",
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    var role: Role
 ) {
+}
+
+enum class Role {
+    ROLE_GUEST, ROLE_USER
 }

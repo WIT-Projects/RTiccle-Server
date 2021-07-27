@@ -1,4 +1,7 @@
 package com.rticcle.server.domain.user
 
-class UserRepository {
+import org.springframework.data.jpa.repository.JpaRepository
+
+interface UserRepository: JpaRepository<User, Long> {
+    fun findByEmail(email: String): User
 }
