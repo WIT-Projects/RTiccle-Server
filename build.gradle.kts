@@ -51,6 +51,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
     testCompile("org.springframework.security:spring-security-test")
     testCompile("org.springframework.boot:spring-boot-starter-test")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
     compile("com.h2database:h2")
     compileOnly("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation(kotlin("test-junit"))
