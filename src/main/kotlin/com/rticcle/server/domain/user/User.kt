@@ -8,15 +8,26 @@ class User (
     var id: Long = Long.MAX_VALUE,
 
     @Column(nullable = false)
-    var userEmail: String = "",
+    var name: String = "",
 
     @Column(nullable = false)
-    var userPassword: String = "",
+    var email: String = "",
+
+    @Column(nullable = false)
+    var password: String = "",
+
+    var picture: String = "",
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     var role: Role
 ) {
+    fun update(name: String, picture: String): User {
+        this.name = name;
+        this.picture = picture
+
+        return this
+    }
 }
 
 enum class Role {
