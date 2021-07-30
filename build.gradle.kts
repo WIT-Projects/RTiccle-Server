@@ -56,6 +56,7 @@ dependencies {
     compile("com.h2database:h2")
     compileOnly("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation(kotlin("test-junit"))
+    implementation("org.springframework.session:spring-session-jdbc")
 
     compile("org.springframework.boot:spring-boot-starter-mustache")
 }
