@@ -2,6 +2,7 @@ package com.rticcle.server.config.auth
 import com.rticcle.server.config.auth.dto.OAuthAttributes
 import com.rticcle.server.config.auth.dto.SessionUser
 import com.rticcle.server.domain.user.User
+
 import com.rticcle.server.domain.user.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -47,8 +48,12 @@ class CustomOauth2UserService: OAuth2UserService<OAuth2UserRequest, OAuth2User> 
     }
 
     private fun saveOrUpdate(attributes: OAuthAttributes): User {
-        val user: User = userRepository.findByEmail(attributes.email)
-            .update(attributes.name, attributes.picture)
+        var user: User? = userRepository.findByEmail(attributes.email)
+        if(user == null) {
+            user = attributes.toEntity()
+        } else {
+            user.update(attributes.name, attributes.picture)
+        }
 
         return userRepository.save(user)
     }

@@ -31,5 +31,5 @@ class User (
 }
 
 enum class Role {
-    ROLE_GUEST, ROLE_USER
+    GUEST, USER
 }
