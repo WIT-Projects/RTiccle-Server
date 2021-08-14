@@ -56,6 +56,10 @@ dependencies {
     compile("com.h2database:h2")
     compileOnly("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation(kotlin("test-junit"))
+
+    // mongodb
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+    implementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo")
 }
 
 tasks.test {
