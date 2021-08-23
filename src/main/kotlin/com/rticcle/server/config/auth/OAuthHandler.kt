@@ -1,9 +1,8 @@
 package com.rticcle.server.config.auth
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.rticcle.server.domain.user.UserRepository
 import com.rticcle.server.security.JWTTokenProvider
-import com.rticcle.server.security.Token
+import com.rticcle.server.security.dto.JWTToken
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.Authentication
 import org.springframework.security.oauth2.core.user.OAuth2User
@@ -33,18 +32,18 @@ class OAuthSuccessHandler: AuthenticationSuccessHandler {
         //val user: User = saveOrUpdate(oAuth2User)
 
         // Generate Token and Write
-        val token: Token = jwtTokenProvider.generateToken(userPK, "USER")
-        writeTokenResponse(response, token)
+        val jwtToken: JWTToken = jwtTokenProvider.generateToken(userPK, "USER")
+        writeTokenResponse(response, jwtToken)
     }
 
-    private fun writeTokenResponse(response: HttpServletResponse?, token: Token) {
+    private fun writeTokenResponse(response: HttpServletResponse?, jwtToken: JWTToken) {
         response?.apply {
-            addHeader("Auth", token.token);
-            addHeader("Refresh", token.refreshToken);
+            addHeader("Auth", jwtToken.token);
+            addHeader("Refresh", jwtToken.refreshToken);
             contentType = "application/json;charset=UTF-8";
 
             var writer = writer;
-            writer.println(objectMapper.writeValueAsString(token));
+            writer.println(objectMapper.writeValueAsString(jwtToken));
             writer.flush();
         }
     }

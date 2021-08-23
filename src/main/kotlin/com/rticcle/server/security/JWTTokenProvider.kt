@@ -1,16 +1,13 @@
 package com.rticcle.server.security
 
+import com.rticcle.server.security.dto.JWTToken
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jws
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.Authentication
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component
 import java.lang.RuntimeException
 import java.util.*
-import javax.servlet.http.HttpServletRequest
 
 @Component
 class JWTTokenProvider {
@@ -21,13 +18,13 @@ class JWTTokenProvider {
     private val tokenPeriod: Long = 1000L * 60L * 10L // 10 minute
     private val refreshTokenPeriod: Long = 1000L * 60L * 60L * 24L * 30L * 3L // 3 weeks
 
-    fun generateToken(userPK: String, role: String): Token {
+    fun generateToken(userPK: String, role: String): JWTToken {
         val claims: Claims = Jwts.claims().setSubject(userPK)
         claims.put("role", role)
 
         val date: Date = Date()
 
-        return Token(
+        return JWTToken(
             token = Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(date)
@@ -52,7 +49,7 @@ class JWTTokenProvider {
         }.getOrDefault(false)
     }
 
-    fun refreshToken(refreshToken: String?): Token {
+    fun refreshToken(refreshToken: String?): JWTToken {
         if (refreshToken != null && verifyToken(refreshToken)) {
             val email: String = getUserPK(refreshToken);
             return generateToken(email, "USER");

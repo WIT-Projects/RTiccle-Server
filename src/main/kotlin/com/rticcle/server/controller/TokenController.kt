@@ -1,7 +1,7 @@
 package com.rticcle.server.controller
 
 import com.rticcle.server.security.JWTTokenProvider
-import com.rticcle.server.security.Token
+import com.rticcle.server.security.dto.JWTToken
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
@@ -15,7 +15,7 @@ class TokenController {
     private lateinit var jwtTokenProvider: JWTTokenProvider
 
     @GetMapping("/token/refresh")
-    fun refreshAuthorization(@RequestHeader httpHeaders: HttpHeaders): ResponseEntity<Token> {
+    fun refreshAuthorization(@RequestHeader httpHeaders: HttpHeaders): ResponseEntity<JWTToken> {
         val refreshToken: String? = httpHeaders["RefreshToken"]?.get(0)
         return ResponseEntity.ok(
             jwtTokenProvider.refreshToken(refreshToken)
