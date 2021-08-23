@@ -1,6 +1,7 @@
 package com.rticcle.server.config.auth
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.rticcle.server.domain.user.Role
 import com.rticcle.server.security.JWTTokenProvider
 import com.rticcle.server.security.dto.JWTToken
 import org.springframework.beans.factory.annotation.Autowired
@@ -32,7 +33,7 @@ class OAuthSuccessHandler: AuthenticationSuccessHandler {
         //val user: User = saveOrUpdate(oAuth2User)
 
         // Generate Token and Write
-        val jwtToken: JWTToken = jwtTokenProvider.generateToken(userPK, "USER")
+        val jwtToken: JWTToken = jwtTokenProvider.generateToken(userPK, Role.USER.toString())
         writeTokenResponse(response, jwtToken)
     }
 

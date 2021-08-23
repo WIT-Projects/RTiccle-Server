@@ -1,5 +1,6 @@
 package com.rticcle.server.config.auth
 import com.rticcle.server.config.auth.dto.OAuthAttributes
+import com.rticcle.server.domain.user.Role
 import com.rticcle.server.domain.user.User
 
 import com.rticcle.server.domain.user.UserRepository
@@ -35,7 +36,7 @@ class CustomOauth2UserService: OAuth2UserService<OAuth2UserRequest, OAuth2User> 
         val user: User = saveOrUpdate(attributes)
 
         return DefaultOAuth2User(
-            Collections.singleton(SimpleGrantedAuthority("USER")),
+            Collections.singleton(SimpleGrantedAuthority(Role.USER.toString())),
             attributes.attributes,
             attributes.nameAttributeKey
         )

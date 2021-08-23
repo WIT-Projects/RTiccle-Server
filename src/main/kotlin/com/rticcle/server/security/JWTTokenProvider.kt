@@ -1,13 +1,16 @@
 package com.rticcle.server.security
 
+import com.rticcle.server.domain.user.Role
 import com.rticcle.server.security.dto.JWTToken
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jws
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
+import org.springframework.http.HttpHeaders
 import org.springframework.stereotype.Component
 import java.lang.RuntimeException
 import java.util.*
+import javax.servlet.http.HttpServletRequest
 
 @Component
 class JWTTokenProvider {
@@ -52,7 +55,7 @@ class JWTTokenProvider {
     fun refreshToken(refreshToken: String?): JWTToken {
         if (refreshToken != null && verifyToken(refreshToken)) {
             val email: String = getUserPK(refreshToken);
-            return generateToken(email, "USER");
+            return generateToken(email, Role.USER.toString());
         }
         // TODO Fix Exception
         throw RuntimeException()
@@ -60,5 +63,16 @@ class JWTTokenProvider {
 
     fun getUserPK(jwtToken: String): String {
         return Jwts.parser().setSigningKey(testSecretKey).parseClaimsJws(jwtToken).body.subject
+    }
+
+    fun getJwtTokenFromHeader(headers: HttpHeaders): String {
+        val jwtToken: String? = headers["Authorization"]?.get(0)
+
+        // Substring Authorization Since the value is in "Authorization":"Bearer JWT_TOKEN" format
+        if(jwtToken != null && jwtToken.startsWith("Bearer ")) {
+            return jwtToken.substring(7)
+        }
+        // TODO Fix Exception
+        throw RuntimeException()
     }
 }
