@@ -33,7 +33,7 @@ class SecurityConfig() : WebSecurityConfigurerAdapter() {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // JWT 인증을 할 거라서 세션은 사용 x
             .and()
                 .authorizeRequests()
-                .antMatchers("/api/v1/**").hasRole(Role.USER.toString())
+                .antMatchers("/api/v1/**", "/token/**").hasRole(Role.USER.toString())
                 .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
             .and()
