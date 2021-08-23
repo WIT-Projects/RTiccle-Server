@@ -20,9 +20,6 @@ class CustomOauth2UserService: OAuth2UserService<OAuth2UserRequest, OAuth2User> 
     @Autowired
     private lateinit var userRepository: UserRepository
 
-    @Autowired
-    private lateinit var httpSession: HttpSession
-
     override fun loadUser(userRequest: OAuth2UserRequest?): OAuth2User {
         val delegate: OAuth2UserService<OAuth2UserRequest, OAuth2User> = DefaultOAuth2UserService()
         val oAuth2User: OAuth2User = delegate.loadUser(userRequest)
@@ -38,10 +35,10 @@ class CustomOauth2UserService: OAuth2UserService<OAuth2UserRequest, OAuth2User> 
 
         val attributes: OAuthAttributes = OAuthAttributes(registrationId, userNameAttributeName, oAuth2User.attributes)
         val user: User = saveOrUpdate(attributes)
-        httpSession.setAttribute("user", SessionUser(user))
+        //httpSession.setAttribute("user", SessionUser(user))
 
         return DefaultOAuth2User(
-            Collections.singleton(SimpleGrantedAuthority(user.role.toString())),
+            Collections.singleton(SimpleGrantedAuthority("USER")),
             attributes.attributes,
             attributes.nameAttributeKey
         )
