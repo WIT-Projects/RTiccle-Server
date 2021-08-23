@@ -13,9 +13,6 @@ class User (
     @Column(nullable = false)
     var email: String = "",
 
-    @Column(nullable = false)
-    var password: String = "",
-
     var picture: String = "",
 
     @Enumerated(EnumType.STRING)

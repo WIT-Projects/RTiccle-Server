@@ -31,7 +31,7 @@ class CustomOauth2UserService: OAuth2UserService<OAuth2UserRequest, OAuth2User> 
             .userInfoEndpoint
             .userNameAttributeName
 
-        val attributes: OAuthAttributes = OAuthAttributes(registrationId, userNameAttributeName, oAuth2User.attributes)
+        val attributes: OAuthAttributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.attributes)
         val user: User = saveOrUpdate(attributes)
 
         return DefaultOAuth2User(
