@@ -1,9 +1,6 @@
 package com.rticcle.server.security
 
-import com.rticcle.server.domain.user.Role
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.GenericFilterBean
 import java.lang.RuntimeException
@@ -21,20 +18,12 @@ class JwtAuthenticationFilter(private val jwtTokenProvider: JWTTokenProvider) : 
         // Check token is valid or not
         if (jwtTokenProvider.verifyToken(token)) {
             // Get User Information
-            // TODO Get user info
-            val userEmail: String = jwtTokenProvider.getUserPK(token)
-            val authentication: Authentication = getAuthentication(userEmail)
+            val authentication: Authentication = jwtTokenProvider.getAuthentication(token)
 
             // Save new authentication to security context
             SecurityContextHolder.getContext().authentication = authentication
         }
         chain?.doFilter(request, response)
-    }
-
-    private fun getAuthentication(email: String): Authentication {
-        return UsernamePasswordAuthenticationToken(
-            email, "", listOf(SimpleGrantedAuthority(Role.USER.toString()))
-        )
     }
 
     private fun getJwtTokenFromHeader(request: HttpServletRequest): String {

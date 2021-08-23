@@ -7,13 +7,15 @@ import io.jsonwebtoken.Jws
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.http.HttpHeaders
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component
 import java.lang.RuntimeException
 import java.util.*
-import javax.servlet.http.HttpServletRequest
 
 @Component
-class JWTTokenProvider {
+class JWTTokenProvider(private val userDetailsService: CustomUserDetailsService) {
     // TODO: make private
     private val testSecretKey: String =
         "testsecret=sfdkjsdfasdfasdgfgasdfsdfgdgsdfgdfgsdfggdfgsdheertqweijhxcviojmwioerujcvksdfdfjdkfsdf"
@@ -59,6 +61,13 @@ class JWTTokenProvider {
         }
         // TODO Fix Exception
         throw RuntimeException()
+    }
+
+    fun getAuthentication(jwtToken: String): Authentication {
+        val userDetails: UserDetails = userDetailsService.loadUserByUsername(getUserPK(jwtToken))
+        return UsernamePasswordAuthenticationToken(
+            userDetails, "", userDetails.authorities
+        )
     }
 
     fun getUserPK(jwtToken: String): String {
