@@ -3,6 +3,7 @@ package com.rticcle.server.domain.ticcle
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
+import java.util.*
 
 @Document(collection="Ticcle")
 data class Ticcle (
@@ -10,16 +11,16 @@ data class Ticcle (
 
     @Id
     var id: ObjectId,
+    var date: Date,
 
     var group: Group,
-    //var date: Date,
     var title: String,
-    //var mainImage: String, // Should be limited?
-
-    var attachment: String, // Binary?
-    var isFile: Boolean, // true -> attachment is file / false -> attachment is link
+    var link: String, // original content link
     var tagList: MutableList<String>,
-    var contentList: MutableList<SmallTiccle>
+    var mainImage: String,
+
+    var contentList: MutableList<SmallTiccle> // limit: 3
+
         )
 
 enum class Group {

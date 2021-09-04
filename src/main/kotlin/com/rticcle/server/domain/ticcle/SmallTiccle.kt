@@ -2,8 +2,7 @@ package com.rticcle.server.domain.ticcle
 
 data class SmallTiccle (
     var title: String,
-    var attachment: String,
-    var isFile: Boolean, // true -> attachment is file / false -> attachment is link
-    var imageList: List<Photo>, // max 3
-    var content: String // max 300
+    var link: String, // original content link
+    var imageList: MutableList<Photo>, // limit: 2
+    var content: String // limit: 300
         )
